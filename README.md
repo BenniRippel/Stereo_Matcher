@@ -1,7 +1,7 @@
-#Stereo Matcher
+# Stereo Matcher
 
 ## Description
-####General Information
+#### General Information
 The tool takes two rectified colorvideos of a stereo camera as input and calculates 
 the according disparity map for every frame. The disparity map is displayed and written to 
 an output file.
@@ -28,7 +28,7 @@ All used frames are preprocessed using the following steps:
  - Gaussian Blur
   
 
-##Dependencies
+## Dependencies
 OpenCV 3.x with CUDA enabeled
 
 
