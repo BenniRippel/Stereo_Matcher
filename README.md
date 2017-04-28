@@ -29,7 +29,7 @@ All used frames are preprocessed using the following steps:
   
 
 ## Dependencies
-OpenCV 3.x with CUDA enabeled
+OpenCV 3.x with CUDA enabled
 
 
 ## Usage
