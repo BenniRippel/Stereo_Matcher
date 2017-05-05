@@ -5,6 +5,7 @@
 #include "opencv2/cudaarithm.hpp"
 #include "opencv2/cudaimgproc.hpp"
 #include <string>
+#include <fstream>
 
 class StereoMatcher {
 
@@ -16,6 +17,7 @@ protected:
     cv::Mat disp_map, colored_disp_map; // init results
     int frame_w, frame_h, ndisp;
     double fps;
+    std::map<std::string, std::string> configValues;
 
 public:
     // Constructor
@@ -30,6 +32,7 @@ public:
     void preprocessFrame(cv::Mat& frame);
     cv::Mat getDispMap();
     cv::Mat getColoredDispMap();
+    void readConfig();
 };
 
 

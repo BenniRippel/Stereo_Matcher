@@ -1,0 +1,22 @@
+# BM Parameter
+BM_blockSize=21
+#
+# SGBM parameter
+SGBM_blockSize=11
+SGBM_P1=1600
+SGBM_P2=4200
+SGBM_disp12MaxDiff=1
+SGBM_preFilterCap=10
+SGBM_uniquenessRatio=5
+SGBM_speckleWindowSize=100
+SGBM_speckleRange=32
+SGBM_mode=cv::StereoSGBM::MODE_SGBM
+#
+# BP Parameters
+BP_iters=5
+BP_levels=5
+#
+# CSBP Parameters
+CSBP_iters=8
+CSBP_levels=4
+CSBP_nr_plane=4

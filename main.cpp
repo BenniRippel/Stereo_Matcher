@@ -38,6 +38,7 @@ int main(int argc, char** argv) {
     else if (std::string(argv[4])=="CSBP"){matcher.reset(new CSBP(frame_w, frame_h, ndisp, fps));}
     else {matcher.reset(new BM(frame_w, frame_h, ndisp, fps));}
 
+    matcher->readConfig();  // read configuration file
     matcher->getStereoObj(); // create Stereo Object
 
     while (cap_left.isOpened() && cap_right.isOpened())  //iterate over video frames
@@ -57,9 +58,6 @@ int main(int argc, char** argv) {
 
     }
     cv::destroyWindow("Colored Disparity Map"); //destroy the window with the name, "MyWindow"
-
-
-
 
     cap_left.release(); // release video capture
     cap_right.release();

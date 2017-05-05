@@ -26,7 +26,7 @@ cv::Mat StereoMatcher::getColoredDispMap(){
 }
 
 void BM::getStereoObj(){
-    int blockSize = 21;
+    int blockSize = std::stoi(configValues.at("BM_blockSize"));
     stereo = cv::cuda::createStereoBM(ndisp, blockSize);
 }
 
@@ -56,14 +56,14 @@ void BM::calcDisparityMap(){
 }
 
 void SGBM::getStereoObj() {
-    int blockSize = 11;
-    int P1 = 1600;
-    int P2 = 4200;
-    int disp12MaxDiff = 1;
-    int preFilterCap = 10;
-    int uniquenessRatio = 5;
-    int speckleWindowSize = 100;
-    int speckleRange = 32;
+    int blockSize = std::stoi(configValues.at("SGBM_blockSize"));
+    int P1 = std::stoi(configValues.at("SGBM_P1"));
+    int P2 = std::stoi(configValues.at("SGBM_P2"));
+    int disp12MaxDiff = std::stoi(configValues.at("SGBM_disp12MaxDiff"));
+    int preFilterCap = std::stoi(configValues.at("SGBM_preFilterCap"));
+    int uniquenessRatio = std::stoi(configValues.at("SGBM_uniquenessRatio"));
+    int speckleWindowSize = std::stoi(configValues.at("SGBM_speckleWindowSize"));
+    int speckleRange = std::stoi(configValues.at("SGBM_speckleRange"));
     int mode = cv::StereoSGBM::MODE_SGBM;
     stereo = cv::StereoSGBM::create(0, ndisp, blockSize, P1, P2, disp12MaxDiff,
                                                                    preFilterCap,
@@ -87,8 +87,8 @@ void SGBM::calcDisparityMap(){
 
 void BP::getStereoObj(){
     //Create Stereo Matcher Object for cuda::StereoBeliefPropagation and return the pointer
-    int iters = 5;
-    int levels = 5;
+    int iters = std::stoi(configValues.at("BP_iters"));
+    int levels = std::stoi(configValues.at("BP_levels"));
     stereo = cv::cuda::createStereoBeliefPropagation(ndisp, iters, levels, CV_32F);
     stereo->estimateRecommendedParams(frame_w, frame_h, ndisp, iters, levels);
 }
@@ -120,9 +120,9 @@ void BP::calcDisparityMap(){
 
 void CSBP::getStereoObj(){
     //Create Stereo Matcher Object for cuda::StereoConstantSpaceBP and return the pointer
-    int iters = 8;
-    int levels = 4;
-    int nr_plane = 4;
+    int iters = std::stoi(configValues.at(("CSBP_iters")));
+    int levels = std::stoi(configValues.at("CSBP_levels"));
+    int nr_plane = std::stoi(configValues.at("CSBP_nr_plane"));
     stereo = cv::cuda::createStereoConstantSpaceBP(ndisp, iters, levels, nr_plane, CV_32F);
     stereo->estimateRecommendedParams(frame_w, frame_h, ndisp, iters, levels, nr_plane);
 }
@@ -152,3 +152,38 @@ void CSBP::calcDisparityMap(){
     gpu_colored_disp.download(colored_disp_map);
 }
 
+void StereoMatcher::readConfig(){
+    // Read Config File and store key-value pairs as strings in configValues map
+    std::ifstream fs;  // open filestream
+    fs.open ("./config.txt");
+
+    try
+    {
+        if (!fs) {
+            throw 1;
+        }
+        // if file is opened, get key, value pairs, ignore # and /
+        else {
+            std::string line;
+            while (std::getline(fs, line)) {
+                std::istringstream is_line(line);
+                std::string key;
+                if (std::getline(is_line, key, '=')) {
+                    std::string value;
+                    if (key[0] == '#' || key[0] == '/') // check for comments in config file
+                        continue;
+
+                    if (std::getline(is_line, value)) {
+                        configValues[key] = value;
+                    }
+                }
+            }
+        }
+        fs.close(); // close filestream
+    }
+    catch (int e)
+    {
+        std::cout << "Could not open & read config.txt! Please check file and location. Terminating..." << std::endl;
+        std::terminate();
+    }
+}
