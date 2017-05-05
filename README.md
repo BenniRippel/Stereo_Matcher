@@ -31,9 +31,12 @@ All used frames are preprocessed using the following steps:
 ## Dependencies
 OpenCV 3.x with CUDA enabled
 
-
 ## Usage
 
 StereoMatcher.out 'Input_Video_1' 'Input_Video_2' 'Output_Video' 'Algorithm'
 
 'Algorithm' may be BM, SGBM, BP, CSBP, Default is BM
+
+A configuration file 'config.txt' must be located in the same folder as the executable, containing the
+parameters for the stereo matching algorithms. A template containing the parameter names and default 
+values is provided.
